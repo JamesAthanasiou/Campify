@@ -22,10 +22,10 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // Start db
+// mongoose.connect("mongodb://localhost/campify");
 mongoose.connect("mongodb+srv://Admin:moomoo123!@cluster0-v40mv.mongodb.net/test?retryWrites=true&w=majority");
-// To data from JSON files
+// To parse data from JSON files
 app.use(bodyParser.urlencoded({extended: true}));
-// To not have to include ejs for every page
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public")); // double check why this isn't just public
 app.use(methodOverride("_method"));
