@@ -1,13 +1,25 @@
 .thumbnail img {
-	width: 100%;
+    width: 100%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .thumbnail {
-	padding: 0;
+    padding: 0 0 8px;
+    border: 0px solid #ddd;
 }
 
 .thumbnail .caption-full {
 	padding: 9px;
+}
+
+.form-header {
+    text-align: center;
+}
+
+.form-body {
+    width: 30%; 
+    margin: 25px auto;
 }
 
 .delete-form {
