@@ -22,7 +22,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // Start db
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb://localhost/campify");
 // To data from JSON files
 app.use(bodyParser.urlencoded({extended: true}));
 // To not have to include ejs for every page
