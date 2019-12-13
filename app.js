@@ -21,9 +21,11 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-// Start db
-// mongoose.connect("mongodb://localhost/campify");
-mongoose.connect("mongodb+srv://Admin:moomoo123!@cluster0-v40mv.mongodb.net/test?retryWrites=true&w=majority");
+
+mongoose.connect(process.env.DATABASEURL);
+//"mongodb://localhost/campify" will be used in the future during development.
+// Right now the app isn't remotely done so only using one db right now.
+
 // To parse data from JSON files
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
