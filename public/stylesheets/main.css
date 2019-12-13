@@ -6,7 +6,7 @@
 
 .thumbnail {
     padding: 0 0 8px;
-    border: 0px solid #ddd;
+    border: 1px solid #ddd;
 }
 
 .thumbnail .caption-full {
@@ -19,6 +19,7 @@
 
 .form-body {
     width: 30%; 
+    min-width: 210px;
     margin: 25px auto;
 }
 

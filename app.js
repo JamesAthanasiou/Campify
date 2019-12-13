@@ -22,7 +22,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-mongoose.connect(process.env.DATABASEURL);
+mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/campify");
 //"mongodb://localhost/campify" will be used in the future during development.
 // Right now the app isn't remotely done so only using one db right now.
 
