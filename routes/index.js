@@ -12,7 +12,7 @@ router.get("/", function(req,res){
 
 // Register Route
 router.get("/register", function(req, res){
-	res.render("register");
+	res.render("register", {page: "register"});
 });
 
 // Handels register logic
@@ -33,7 +33,7 @@ router.post("/register", function(req, res){
 
 // Login route
 router.get("/login", function(req, res){
-	res.render("login");
+	res.render("login", {page: "login"});
 });
 
 //TODO does not display error message for wrong login
