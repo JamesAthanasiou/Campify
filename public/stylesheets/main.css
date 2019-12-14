@@ -27,6 +27,11 @@
 	display: inline;
 }
 
+#map {
+    height: 400px;
+    width: 100%;
+}
+
 body {
     background-color: #539940;
 }

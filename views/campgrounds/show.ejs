@@ -9,7 +9,7 @@
 				<li class="list-group-item">Info 2</li>
 				<li class="list-group-item">Info 3</li>
 			</div>
-			MAP Place in the future
+			<div id="map"></div>
 		</div>
 		<div class="col-md-9">
 			<div class="thumbnail">
@@ -57,5 +57,39 @@
 		</div>
 	</div>
 </div>
+
+<!-- Side note regarding keys: If the public API key allows local host, anyone can call up http://localhost:3000/* and access 
+the API still. Only include http://localhost:3000/* when project is not deployed. Once deployed, it can only be accessed by
+the version on the server. In this case that is http://campifyapp.herokuapp.com/*. Again, there is a private API key that is
+stored in ENV in the .env file and also in Heroku. This one can take requests from anywhere. Only the public API key is uploaded
+in the code. -->
+<script>
+    function initMap(){
+        var lat = <%= campground.lat %>;
+        var lng = <%= campground.lng %>;
+        var center = {lat: lat, lng: lng};
+        var map = new google.maps.Map(document.getElementById("map"),{
+            zoom: 8,
+            center: center,
+            scrollwheel: false
+        });
+        var contentString = `
+            <strong><%= campground.name %><br />
+            <%= campground.location %></strong>
+            <p><%= campground.description %></p>
+            `
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        });
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTrzaFglhHLZEiINHnfOpe6CDTsWl7mLc&callback=initMap"></script>
 
 <%- include("../partials/footer") %>
