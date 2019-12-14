@@ -32,9 +32,7 @@ router.get("/new", middleware.isLoggedIn, function(req,res){
 });
 
 // CREATE
-//CREATE - add new campground to DB
 router.post("/", middleware.isLoggedIn, function(req, res){
-    // get data from form and add to campgrounds array
     var name = req.body.name;
     var image = req.body.image;
     var desc = req.body.description;
@@ -119,6 +117,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res){
     geocoder.geocode(req.body.location, function (err, data) {
         if (err || !data.length) {
             req.flash('error', 'Invalid address');
+            console.log(err.message);
             return res.redirect('back');
         }
         req.body.campground.lat = data[0].latitude;
