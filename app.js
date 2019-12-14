@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 var express        = require("express"),
 	app            = express(),
 	bodyParser     = require("body-parser"), 
@@ -24,7 +26,6 @@ mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/campify");
 //"mongodb://localhost/campify" will be used in the future during development.
-// Right now the app isn't remotely done so only using one db right now.
 
 // To parse data from JSON files
 app.use(bodyParser.urlencoded({extended: true}));
