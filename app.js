@@ -1,5 +1,7 @@
+// This is to find Google Maps API key
 require("dotenv").config();
 
+// Variables
 var express        = require("express"),
 	app            = express(),
 	bodyParser     = require("body-parser"), 
@@ -11,32 +13,29 @@ var express        = require("express"),
 	Campground     = require("./models/campground"),
 	Comment        = require("./models/comment"),
 	User           = require("./models/user");
-	//seedDB        = require("./seeds"); // no longer used 
 	
 // Include routes which have been moved to other files
-var commentRoutes    = require("./routes/comments"),
+var commentRoutes     = require("./routes/comments"),
 	campgroundRoutes  = require("./routes/campgrounds"),
 	indexRoutes       = require("./routes/index");
 
-// To fix deprication warnings for mongoose/mongo
+// Connect to DB
+// To fix deprication warnings for mongoose due to changes in MongoDB
 mongoose.set("useNewUrlParser", true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-
 mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/campify");
-//"mongodb://localhost/campify" will be used in the future during development.
 
-// To parse data from JSON files
+// Helpful stuff
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public")); // double check why this isn't just public
 app.use(methodOverride("_method"));
 app.use(flash());
-// This is to create data within the db originally
-//seedDB();
+app.locals.moment = require("moment");
 
-// Passport Configuration
+// Passport configuration
 app.use(require("express-session")({
 	secret: "Here is another sentence that has been secretized",
 	resave: false,
@@ -53,7 +52,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next){
 	res.locals.currentUser = req.user;
 	// error or success is in header template. If there is no req.flash, then no message is rendered
-	// error/success are not bootstrap names, can be whatever
 	res.locals.error = req.flash("error");
 	res.locals.success = req.flash("success");
 	next();
@@ -65,7 +63,6 @@ app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 // Configure server
-
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log("Server Has Started!");
