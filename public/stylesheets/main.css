@@ -27,6 +27,11 @@
 	display: inline;
 }
 
+.index-campgrounds {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 #map {
     height: 400px;
     width: 100%;
