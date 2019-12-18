@@ -1,24 +1,30 @@
 <%- include("../partials/header") %>
 
-<div class="row">
-    <div class="col-md-4">
-        <h1><%= user.username %></h1>
-        <div class="thumbnail">
-            <img src="<%= user.avatar %>" alt="user profile picture">
-            <div class="caption"><a href="mailto:<%= user.email %>"><%= user.email %></a></div>
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <h1><%= user.username %></h1>
+                    <div class="thumbnail">
+                        <img src="<%= user.avatar %>" alt="user profile picture">
+                        <div class="caption"><a href="mailto:<%= user.email %>">Send me an email: <%= user.email %></a></div>
+                    </div>
+                    <h3>About</h3>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia animi porro officiis voluptatem 
+                    non atque quibusdam, explicabo, architecto sint blanditiis beatae obcaecati dolorum aliquid nisi, 
+                    ducimus voluptas sed error molestiae.
+                </div>
+                <div class="col-md-8">
+                    <h3>Campgrounds added by <%= user.username %></h3>
+                    <ul>
+                        <% campgrounds.forEach(function(campground){ %>
+                            <li><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <h3>About</h3>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia animi porro officiis voluptatem 
-        non atque quibusdam, explicabo, architecto sint blanditiis beatae obcaecati dolorum aliquid nisi, 
-        ducimus voluptas sed error molestiae.
-    </div>
-    <div class="col-md-8">
-        <h3>Campgrounds added by <%= user.username =></h3>
-        <ul>
-            <% campgrounds.forEach(function(campground){ %>
-                <li><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a></li>
-            <% }) %>
-        </ul>
     </div>
 </div>
  

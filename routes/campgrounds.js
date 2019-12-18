@@ -4,6 +4,7 @@ var Campground = require("../models/campground");
 var middleware = require("../middleware/index");
 var NodeGeocoder = require("node-geocoder");
 
+// For google maps
 var options = {
     provider: "google",
     httpAdapter: "https",
