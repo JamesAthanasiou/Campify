@@ -1,27 +1,40 @@
 <%- include("../partials/header") %>
 
 <div class="container">
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
                     <h1><%= user.username %></h1>
+                </div>
+                <div class="col-sm-6">
+                    <h3>Campgrounds added by <%= user.username %></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
                     <div class="thumbnail">
                         <img src="<%= user.avatar %>" alt="user profile picture">
-                        <div class="caption"><a href="mailto:<%= user.email %>">Send me an email: <%= user.email %></a></div>
+                        <div class="caption">Contact: <a href="mailto:<%= user.email %>"> <%= user.email %></a></div>
                     </div>
                     <h3>About</h3>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia animi porro officiis voluptatem 
-                    non atque quibusdam, explicabo, architecto sint blanditiis beatae obcaecati dolorum aliquid nisi, 
-                    ducimus voluptas sed error molestiae.
+                    <%= user.description %>
                 </div>
-                <div class="col-md-8">
-                    <h3>Campgrounds added by <%= user.username %></h3>
-                    <ul>
-                        <% campgrounds.forEach(function(campground){ %>
-                            <li><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a></li>
-                        <% }); %>
-                    </ul>
+                <div class="row text-center index-campgrounds col-sm-6">
+                                <% campgrounds.forEach(function(campground){ %>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <div class="thumbnail">
+                                            <img src="<%= campground.image %>">
+                                            <div class="caption">
+                                                <h4><%= campground.name %></h4>
+                                            </div>
+                                            <p>
+                                                <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                <% }); %>
+
                 </div>
             </div>
         </div>
