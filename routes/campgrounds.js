@@ -11,20 +11,31 @@ var options = {
     apiKey: process.env.GEOCODER_API_KEY,
     formatter: null
 };
-
 var geocoder = NodeGeocoder(options);
 
 // INDEX
 router.get("/", function(req, res){
-	// retrieve all campgrounds from db
-	Campground.find({}, function(err, allCampgrounds){
-		if(err){
-			req.flash("error", "Could not find campgrounds");
-			console.log(err);
-		} else {
-			res.render("campgrounds/index",{campgrounds: allCampgrounds, page: "campgrounds"});
-		}
-	});
+    if(req.query.search){
+        var regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Campground.find({name: regex}, function(err, allCampgrounds){
+            if(err){
+                req.flash("error", "Could not find campgrounds");
+                console.log(err);
+            } else {
+                res.render("campgrounds/index",{campgrounds: allCampgrounds, page: "campgrounds"});
+            }
+        });
+    } else {
+        // retrieve all campgrounds from db
+        Campground.find({}, function(err, allCampgrounds){
+            if(err){
+                req.flash("error", "Could not find campgrounds");
+                console.log(err);
+            } else {
+                res.render("campgrounds/index",{campgrounds: allCampgrounds, page: "campgrounds"});
+            }
+        });
+    }
 });
 
 // NEW
@@ -162,5 +173,9 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
 		}
 	});
 });
+
+function escapeRegex(text){
+    return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
 
 module.exports = router;

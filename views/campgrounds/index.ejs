@@ -6,7 +6,15 @@
 			<h1>Welcome To Campify!</h1>
 			<p>View our hand-picked campgrounds from the internet!</p>
 			<p><a class="btn btn-success btn-lg" href="/campgrounds/new">Add New Campground</a></p>
-		</div>
+            <p>
+                <form action="/campgrounds" method="GET" class="form-inline">
+                    <div class=form-group>
+                        <input type="text" name="search" placeholder="Search Campgrounds" class="form-control">
+                        <input type="submit" value="Search" class="btn btn-default"
+                    </div>
+                </form>
+            </p>
+        </div>
 	</header>
 	<div class="row text-center index-campgrounds">
 		<% campgrounds.forEach(function(campground){ %>
