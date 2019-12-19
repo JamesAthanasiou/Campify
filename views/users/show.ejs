@@ -6,35 +6,39 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h1><%= user.username %></h1>
-                </div>
-                <div class="col-sm-6">
-                    <h3>Campgrounds added by <%= user.username %></h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
                     <div class="thumbnail">
                         <img src="<%= user.avatar %>" alt="user profile picture">
-                        <div class="caption">Contact: <a href="mailto:<%= user.email %>"> <%= user.email %></a></div>
+                        <div class="caption">
+                            <% if(user.email){ %>
+                                Contact: <a href="mailto:<%= user.email %>"> <%= user.email %></a>
+                            <% } else { %>
+                                <!-- for older accounts with no email -->
+                                This user has not linked their email yet!
+                            <% } %>
+                        </div>
                     </div>
                     <h3>About</h3>
                     <%= user.description %>
                 </div>
-                <div class="row text-center index-campgrounds col-sm-6">
-                                <% campgrounds.forEach(function(campground){ %>
-                                    <div class="col-sm-6 col-lg-4">
-                                        <div class="thumbnail">
-                                            <img src="<%= campground.image %>">
-                                            <div class="caption">
-                                                <h4><%= campground.name %></h4>
-                                            </div>
-                                            <p>
-                                                <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
-                                            </p>
-                                        </div>
+                <div class="col-sm-6">
+                    <div class="added-by-header">
+                        <h3>Campgrounds added by <%= user.username %></h3>
+                    </div>
+                    <div class="text-center index-campgrounds">
+                        <% campgrounds.forEach(function(campground){ %>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="thumbnail">
+                                    <img src="<%= campground.image %>">
+                                    <div class="caption">
+                                        <h4><%= campground.name %></h4>
                                     </div>
-                                <% }); %>
-
+                                    <p>
+                                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
+                                    </p>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
                 </div>
             </div>
         </div>
