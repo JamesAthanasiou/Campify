@@ -1,5 +1,3 @@
-//TODO does not display error message for wrong login
-
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");

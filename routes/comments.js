@@ -48,20 +48,6 @@ router.get("/:commentId/edit", middleware.isLoggedIn, middleware.checkUserCommen
   res.render("comments/edit", {campground_id: req.params.id, comment: req.comment});
 });
 
-// Older edit that could be broken
-/*
-router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res){
-	Comment.findById(req.params.comment_id, function (err, foundComment){
-		if(err){
-			req.flash("error", "Could not edit comment");
-			res.redirect("back");
-		} else {
-			res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
-		}
-	});
-});
-*/
-
 // Comment Update
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
 	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
