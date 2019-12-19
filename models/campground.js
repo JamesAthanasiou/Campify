@@ -26,7 +26,7 @@ var campgroundSchema = new mongoose.Schema({
 			ref: "Comment"
 		}
 	],
-	price: String
+	price: Number
 });
 
 module.exports =  mongoose.model("Campground", campgroundSchema);
