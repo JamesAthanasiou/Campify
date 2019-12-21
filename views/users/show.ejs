@@ -20,24 +20,26 @@
                     <h3>About</h3>
                     <%= user.description %>
                 </div>
-                <div class="col-sm-6">
-                    <div class="added-by-header">
-                        <h3>Campgrounds added by <%= user.username %></h3>
-                    </div>
-                    <div class="text-center index-campgrounds">
-                        <% campgrounds.forEach(function(campground){ %>
-                            <div class="col-sm-6 col-lg-4">
-                                <div class="thumbnail">
-                                    <img src="<%= campground.image %>">
-                                    <div class="caption">
-                                        <h4><%= campground.name %></h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="added-by-header">
+                            <h3>Campgrounds added by <%= user.username %></h3>
+                        </div>
+                        <div class="text-center index-campgrounds">
+                            <% campgrounds.forEach(function(campground){ %>
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="thumbnail">
+                                        <img src="<%= campground.image %>">
+                                        <div class="caption">
+                                            <h4><%= campground.name %></h4>
+                                        </div>
+                                        <p>
+                                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
+                                        </p>
                                     </div>
-                                    <p>
-                                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
-                                    </p>
                                 </div>
-                            </div>
-                        <% }); %>
+                            <% }); %>
+                        </div>
                     </div>
                 </div>
             </div>
