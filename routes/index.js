@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
-var Campground = require("../models/campground")
+var Campground = require("../models/campground");
+var middleware = require("../middleware/index");
 
 // Root Route
 router.get("/", function(req,res){
@@ -56,7 +57,7 @@ router.get("/logout", function(req, res){
 	res.redirect("campgrounds"); 
 });
 
-// User profile
+// Show user profile
 router.get("/users/:id", function (req,res){
     User.findById(req.params.id, function(err, foundUser){
         if(err){
@@ -70,6 +71,39 @@ router.get("/users/:id", function (req,res){
             }
             res.render("users/show", {user: foundUser, campgrounds: campgrounds});
         });
+    });
+});
+
+// Edit user profile
+router.get("/users/:id/edit", middleware.checkProfileOwnership, function (req, res){
+    User.findById(req.params.id, function(err, foundUser){
+        if(err){
+            req.flash("error", "Could not find profile for that user");
+            res.redirect("/campgrounds/");
+        } else {
+            res.render("users/edit", {user: foundUser});
+        }
+    });
+});
+
+// Update user profile
+router.put("/users/:id", middleware.checkProfileOwnership, function (req, res){
+    User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+        // Mongo keeps throwing writeConcernError {code 79, codeName: 'UnknownReplWriteConcern'}
+        // The database still updates but it will display an error message to the user.
+        // For the time being the error handling has been removed since editing an existing user
+        // will only fail if the DB is taken offline. In that case, there are probably other errors that
+        // will occur anyway
+
+        if(err){
+            console.log(err);
+            /*
+            req.flash("error", "Could not edit profile");
+            */
+            res.redirect("/users/" + req.params.id);
+        } else {
+            res.redirect("/users/" + req.params.id);
+        }
     });
 });
 
