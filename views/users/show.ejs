@@ -19,14 +19,15 @@
                     </div>
                     <h3>About</h3>
                     <%= user.description %>
-                </div>
-                <!--  Not correct code, must be updated!               
-                    <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
-                    <a class="btn btn-xs btn-warning" 
-                       href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">
-                        Edit
-                    </a>
-                <% } %> -->
+                    <div>
+                        <% if(currentUser && user._id.equals(currentUser._id)){ %>
+                            <a class="btn btn-sm btn-warning" 
+                                href="/users/<%= currentUser._id %>/edit">
+                                Edit Profile
+                            </a>
+                        <% } %>
+                    </div>
+                </div>     
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="added-by-header">
