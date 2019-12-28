@@ -1,6 +1,7 @@
 var middlewareObj = {};
 Campground = require("../models/campground");
 Comment = require("../models/comment");
+Users = require("../models/user");
 
 // Check if logged in and are owner of campground
 middlewareObj.checkCampgroundOwnership = function (req, res, next){
@@ -85,6 +86,30 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
        }
     });
   }
+
+  // Check if logged in and are owner of profile
+middlewareObj.checkProfileOwnership = function (req, res, next){
+	if(req.isAuthenticated()){
+		Users.findById(req.params.id, function(err, foundUser){
+			if(err){
+				req.flash("error", "User not found");
+				res.redirect("/users/" + req.params.id);
+				console.log(err);
+			} else {
+				// must use equals method to compare with other id which is a string
+				if(foundUser._id.equals(req.user._id)) {
+					next();
+				} else {
+					req.flash("error", "You don\'t have permission to do that");
+					res.redirect("/users/" + req.params.id);
+				}	
+			}
+		});
+	} else {
+		req.flash("error", "You need to be logged in to do that");
+		res.redirect("/login");
+	}
+}
 
 // Check if logged in
 middlewareObj.isLoggedIn = function (req, res, next){
