@@ -54,7 +54,7 @@ router.post("/login", passport.authenticate("local",
 router.get("/logout", function(req, res){
 	req.logout();
 	req.flash("success", "You Logged Out");
-	res.redirect("campgrounds"); 
+	res.redirect("/campgrounds/"); 
 });
 
 // Show user profile
@@ -62,15 +62,17 @@ router.get("/users/:id", function (req,res){
     User.findById(req.params.id, function(err, foundUser){
         if(err){
             req.flash("error", "Could not find profile for that user");
-            res.redirect("back");
+            res.redirect("/campgrounds/");
+        } else {
+            Campground.find().where("author.id").equals(foundUser._id).exec(function(err, campgrounds){
+                if(err){
+                    req.flash("error", "Could not find profile for that user");
+                    res.redirect("/campgrounds/");
+                } else {
+                    res.render("users/show", {user: foundUser, campgrounds: campgrounds});
+                }
+            });
         }
-        Campground.find().where("author.id").equals(foundUser._id).exec(function(err, campgrounds){
-            if(err){
-                req.flash("error", "Could not find profile for that user");
-                res.redirect("back");
-            }
-            res.render("users/show", {user: foundUser, campgrounds: campgrounds});
-        });
     });
 });
 

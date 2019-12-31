@@ -56,6 +56,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     geocoder.geocode(req.body.location, function (err, data) {
         if (err || !data.length) {
             req.flash('error', 'Invalid address');
+            console.log(err.message);
             return res.redirect('back');
         }
         var lat = data[0].latitude;
@@ -65,7 +66,8 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         // Create a new campground and save to DB
         Campground.create(newCampground, function(err, newCampground){
             if(err){
-                console.log(err);
+                req.flash("error", "Could not create campground");
+                redirect("/campgrounds")
             } else {
                 res.redirect("/campgrounds");
             }
@@ -79,7 +81,7 @@ router.get("/:id", function(req,res){
 	Campground.findById(req.params.id).populate("comments").exec(function(err,foundCampground){
 		if(err){
 			req.flash("error", "Campground not found");
-			console.log(err);
+			res.redirect("/campgrounds")
 		} else {
 			res.render("campgrounds/show", {campground:foundCampground});
 		}
