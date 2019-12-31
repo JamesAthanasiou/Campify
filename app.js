@@ -17,7 +17,8 @@ var express        = require("express"),
 // Include routes which have been moved to other files
 var commentRoutes     = require("./routes/comments"),
 	campgroundRoutes  = require("./routes/campgrounds"),
-	indexRoutes       = require("./routes/index");
+    indexRoutes       = require("./routes/index"),
+    userRoutes        = require("./routes/users");
 
 // Connect to DB
 // To fix deprication warnings for mongoose due to changes in MongoDB
@@ -47,11 +48,8 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-// Allow current user info from db to be accessed on webpages
 app.use(function(req, res, next){
 	res.locals.currentUser = req.user;
-	// error or success is in header template. If there is no req.flash, then no message is rendered
 	res.locals.error = req.flash("error");
 	res.locals.success = req.flash("success");
 	next();
@@ -61,6 +59,7 @@ app.use(function(req, res, next){
 app.use("/", indexRoutes); // "/" not required, just done to match pattern
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/users", userRoutes);
 
 // Configure server
 var port = process.env.PORT || 3000;
