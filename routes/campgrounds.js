@@ -187,7 +187,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
             req.flash("error", "Campground not found");
             return res.redirect("back");
         } 
-        cloudinary.v2.uploader.destroy(campground.imageId), function(err){
+        cloudinary.v2.uploader.destroy(campground.imageId, function(err){
             if(err){
                 req.flash("error", err.message);
                 return res.redirect("back");
@@ -200,7 +200,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
                 req.flash("success", "Campground deleted");
                 res.redirect("/campgrounds");
             });
-        }
+        });
     });
 });
 
