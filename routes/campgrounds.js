@@ -68,20 +68,24 @@ router.get("/new", middleware.isLoggedIn, function(req,res){
 });
 
 // CREATE
-router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, res){
+router.post("/", middleware.isLoggedIn, upload.single("image"), function(req, res){
     geocoder.geocode(req.body.location, function (err, data) {
         if (err || !data.length) {
-            req.flash('error', 'Invalid address');
-            return res.redirect('back');
+            req.flash("error", "Invalid address");
+            console.log(err.message);
+            return res.redirect("back");
         }
         req.body.campground.lat = data[0].latitude;
         req.body.campground.lng = data[0].longitude;
         req.body.campground.location = data[0].formattedAddress;
+        console.log("lat in geocoder funciton is" + req.body.campground.lat);
 
         cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
+            console.log("lat in image upload funciton is" + req.body.campground.lat);
             if(err) {
-              req.flash('error', err.message);
-              return res.redirect('back');
+              req.flash("error", err.message);
+              console.log(err.message);
+              return res.redirect("back");
             }
             // add cloudinary url for the image to the campground object under image property
             req.body.campground.image = result.secure_url;
@@ -95,10 +99,11 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
             // Create a new campground and save to DB
             Campground.create(req.body.campground, function(err, campground) {
               if (err) {
-                req.flash('error', err.message);
-                return res.redirect('back');
+                req.flash("error", err.message);
+                console.log(err.message);
+                return res.redirect("back");
               }
-              res.redirect('/campgrounds/' + campground.id);
+              res.redirect("/campgrounds/" + campground.id);
             });
         });
     });
