@@ -131,7 +131,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single("image"), 
             return res.redirect("back");
         } 
     
-        geocoder.geocode(req.body.campground.location, function (err, data) {
+        geocoder.geocode(campground.location, function (err, data) {
             if (err || !data.length) {
                 req.flash('error', 'Invalid address');
                 return res.redirect('back');
