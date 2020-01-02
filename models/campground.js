@@ -4,7 +4,8 @@ var Comment = require('./comment');
 // Schema Setup
 var campgroundSchema = new mongoose.Schema({
 	name: String,
-	image: String,
+    image: String,
+    imageId: String,
     description: String,
     location: String,
     lat: Number,
