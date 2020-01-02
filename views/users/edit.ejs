@@ -8,6 +8,7 @@
                 <div class="form-body">
                     <form action="/users/<%= user._id %>/?_method=PUT" method="POST">
                         <div class="form-group">
+                            <label for="user[email]">Email</label>
                             <% if (user.email) { %>
                                 <input class="form-control" type="text" name="user[email]" value="<%= user.email %>">
                             <% } else { %>
@@ -15,9 +16,11 @@
                             <% } %>
                         </div>
                         <div class="form-group">
+                            <label for="user[avatar]">Profile Picture URL</label>
                             <input class="form-control" type="text" name="user[avatar]" value="<%= user.avatar %>" required>
                         </div>
                         <div class="form-group">
+                            <label for="user[description]">About</label>
                             <textarea class="form-control" name="user[description]" rows="3" required><%= user.description %></textarea>
                         </div>
                         <div class="form-group">
