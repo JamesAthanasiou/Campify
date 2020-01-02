@@ -19,7 +19,15 @@
                     </div>
                     <h3>About</h3>
                     <%= user.description %>
-                </div>
+                    <div>
+                        <% if(currentUser && user._id.equals(currentUser._id)){ %>
+                            <a class="btn btn-sm btn-warning" 
+                                href="/users/<%= currentUser._id %>/edit">
+                                Edit Profile
+                            </a>
+                        <% } %>
+                    </div>
+                </div>     
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="added-by-header">

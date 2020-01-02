@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
-var Campground = require("../models/campground")
 
 // Root Route
 router.get("/", function(req,res){
@@ -24,7 +23,6 @@ router.post("/register", function(req, res){
         });
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){	
-			// passport gives a specific error message so it is being passed through to req.flash
 			req.flash("error", err.message);
 			return res.redirect("/register");
 		}
@@ -53,24 +51,7 @@ router.post("/login", passport.authenticate("local",
 router.get("/logout", function(req, res){
 	req.logout();
 	req.flash("success", "You Logged Out");
-	res.redirect("campgrounds"); 
-});
-
-// User profile
-router.get("/users/:id", function (req,res){
-    User.findById(req.params.id, function(err, foundUser){
-        if(err){
-            req.flash("error", "Could not find profile for that user");
-            res.redirect("back");
-        }
-        Campground.find().where("author.id").equals(foundUser._id).exec(function(err, campgrounds){
-            if(err){
-                req.flash("error", "Could not find profile for that user");
-                res.redirect("back");
-            }
-            res.render("users/show", {user: foundUser, campgrounds: campgrounds});
-        });
-    });
+	res.redirect("/campgrounds/"); 
 });
 
 module.exports = router;

@@ -29,7 +29,6 @@ var campgroundSchema = new mongoose.Schema({
 	],
 	price: {
         type: Number,
-        default: 0
     }
 });
 
