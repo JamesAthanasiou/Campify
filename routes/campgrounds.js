@@ -125,7 +125,7 @@ router.get("/:id/edit", middleware.isLoggedIn, middleware.checkUserCampground, f
 
 // UPDATE
 router.put("/:id", middleware.checkCampgroundOwnership, upload.single("image"), function(req, res){
-    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, campground){
+    Campground.findById(req.params.id, req.body.campground, function(err, campground){
         if(err){
             req.flash("error", err.message);
             return res.redirect("back");
