@@ -3,7 +3,7 @@ var router = express.Router();
 var Campground = require("../models/campground");
 var middleware = require("../middleware/index");
 var NodeGeocoder = require("node-geocoder");
-//var request = require("request"); this appears to do nothing
+var request = require("request");
 
 // For image upload
 var multer = require('multer');
@@ -69,22 +69,18 @@ router.get("/new", middleware.isLoggedIn, function(req,res){
 
 // CREATE
 router.post("/", middleware.isLoggedIn, upload.single("image"), function(req, res){
-    geocoder.geocode(req.body.location, function (err, data) {
+    geocoder.geocode(req.body.campground.location, function (err, data) {
         if (err || !data.length) {
             req.flash("error", "Invalid address");
-            console.log(err.message);
             return res.redirect("back");
         }
         req.body.campground.lat = data[0].latitude;
         req.body.campground.lng = data[0].longitude;
         req.body.campground.location = data[0].formattedAddress;
-        console.log("lat in geocoder funciton is" + req.body.campground.lat);
 
         cloudinary.v2.uploader.upload(req.file.path, function(err, result) {
-            console.log("lat in image upload funciton is" + req.body.campground.lat);
             if(err) {
               req.flash("error", err.message);
-              console.log(err.message);
               return res.redirect("back");
             }
             // add cloudinary url for the image to the campground object under image property
