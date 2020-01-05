@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
+var Review = require("../models/review");
 var middleware = require("../middleware/index");
 var NodeGeocoder = require("node-geocoder");
 var request = require("request");
@@ -106,14 +107,16 @@ router.post("/", middleware.isLoggedIn, upload.single("image"), function(req, re
 });
 
 // SHOW
-router.get("/:id", function(req,res){
-	// findById is provided by mongoose
-	Campground.findById(req.params.id).populate("comments").exec(function(err,foundCampground){
+router.get("/:id", function(req, res){
+	Campground.findById(req.params.id).populate("comments").populate({
+        path: "reviews",
+        options: {sort: {createdAt: -1}}
+    }).exec(function(err, foundCampground){
 		if(err){
 			req.flash("error", "Campground not found");
 			res.redirect("/campgrounds")
 		} else {
-			res.render("campgrounds/show", {campground:foundCampground});
+			res.render("campgrounds/show", {campground: foundCampground});
 		}
 	});
 });
@@ -125,6 +128,9 @@ router.get("/:id/edit", middleware.isLoggedIn, middleware.checkUserCampground, f
 
 // UPDATE
 router.put("/:id", middleware.checkCampgroundOwnership, upload.single("image"), function(req, res){
+    // remove rating field to prevent rating from being manipulated
+    delete req.body.campground.rating;
+
     Campground.findById(req.params.id, function(err, campground){
         if(err){
             req.flash("error", err.message);
@@ -185,26 +191,42 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
     Campground.findById(req.params.id, function(err, campground){
         if(err){
             req.flash("error", "Campground not found");
-            return res.redirect("back");
-        } 
+            return res.redirect("/campgrounds");
+        }
+        // delete image on cloudinary 
         cloudinary.v2.uploader.destroy(campground.imageId, function(err){
             if(err){
                 req.flash("error", err.message);
                 return res.redirect("back");
             }
-            campground.remove(function(err){
-                if(err){
-                    req.flash("error", "Campground not found");
-                    return res.redirect("/campgrounds");
+            // delete associated comments for campground
+            Review.remove({"_id": {$in: campground.comments}}, function (err){
+                if (err) {
+                    req.flash("error", err.message);
+                    return res.redirect("back");
                 }
-                req.flash("success", "Campground deleted");
-                res.redirect("/campgrounds");
+                // delete associated reviews for campground
+                Review.remove({"_id": {$in: campground.reviews}}, function (err){
+                    if (err) {
+                        req.flash("error", err.message);
+                        return res.redirect("back");
+                    }
+                    // delete campground
+                    campground.remove(function(err){
+                        if(err){
+                            req.flash("error", "Campground not found");
+                            return res.redirect("/campgrounds");
+                        }
+                        req.flash("success", "Campground deleted");
+                        res.redirect("/campgrounds");
+                    });
+                });
             });
         });
     });
 });
 
-// Function to help with search
+// Function for search feature
 function escapeRegex(text){
     return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }

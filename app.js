@@ -1,7 +1,3 @@
-// This is to find Google Maps API key
-require("dotenv").config();
-
-// Variables
 var express        = require("express"),
 	app            = express(),
 	bodyParser     = require("body-parser"), 
@@ -11,14 +7,21 @@ var express        = require("express"),
 	LocalStrategy  = require("passport-local"),
 	methodOverride = require("method-override"),
 	Campground     = require("./models/campground"),
-	Comment        = require("./models/comment"),
-	User           = require("./models/user");
+    Comment        = require("./models/comment"),
+    Review         = require("./models/review"),
+    User           = require("./models/user");
+    
+    // This is to find Google Maps API key for local development
+    // but is no longer used.
+    // require("dotenv").config();
 	
-// Include routes which have been moved to other files
-var commentRoutes     = require("./routes/comments"),
-	campgroundRoutes  = require("./routes/campgrounds"),
+// Requiring routes
+var campgroundRoutes  = require("./routes/campgrounds"),
+    commentRoutes     = require("./routes/comments"),
     indexRoutes       = require("./routes/index"),
+    reviewRoutes      = require("./routes/reviews"),
     userRoutes        = require("./routes/users");
+    
 
 // Connect to DB
 // To fix deprication warnings for mongoose due to changes in MongoDB
@@ -60,6 +63,7 @@ app.use("/", indexRoutes); // "/" not required, just done to match pattern
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/users", userRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 // Configure server
 var port = process.env.PORT || 3000;

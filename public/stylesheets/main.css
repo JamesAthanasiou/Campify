@@ -6,6 +6,10 @@ body {
     padding-left: 15px;
 }
 
+.checked {
+    color: orange;
+}
+
 .delete-form {
 	display: inline;
 }
@@ -18,6 +22,19 @@ body {
 
 .form-header {
     text-align: center;
+}
+
+.hr-header {
+    margin-top: 0;
+}
+
+.review-body {
+    text-align: justify; 
+    word-wrap: break-word;
+}
+
+.see-more {
+    margin-bottom: 10px;
 }
 
 .index-campgrounds {
