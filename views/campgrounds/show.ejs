@@ -89,6 +89,7 @@
                             </form>
                         <% } %>
                     <% }); %>
+                    <% } %>
                     <% if (campground.reviews.length > 5){ %>
                         <hr>
                         <div class="see-more">
@@ -98,7 +99,6 @@
                     <% if (!currentUser || ((currentUser && !campground.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) && !currentUser.isOwner)) { %> 
                         <hr>
                         <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/reviews/new">Write a Review</a>
-                    <% } %>
                     <% } %>
                 </div>
             </div>
