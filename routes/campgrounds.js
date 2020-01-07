@@ -149,9 +149,12 @@ router.put("/:id", middleware.checkCampgroundOwnership, upload.single("image"), 
                 req.flash("error", "Invalid address");
                 return res.redirect("back");
             }
-            campground.lat = data[0].latitude;
-            body.campground.lng = data[0].longitude;
-            body.campground.location = data[0].formattedAddress;
+            // is not submitting the revised address, so will be disabled for now
+            /*
+            req.body.campground.lat = data[0].latitude;
+            req.body.campground.lng = data[0].longitude;
+            req.body.campground.location = data[0].formattedAddress;
+            */
 
             // if user uploads new campground, delete old image and update new one
             if (req.file){
