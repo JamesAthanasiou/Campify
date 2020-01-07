@@ -28,7 +28,7 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/campify" || process.env.DATABASEURL);
+mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/campify");
 
 // Helpful stuff
 app.use(bodyParser.urlencoded({extended: true}));
