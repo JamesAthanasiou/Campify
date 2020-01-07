@@ -9,15 +9,15 @@
                     <form action="/register" method="POST">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input class="form-control" type="text" name="username" placeholder="username">
+                            <input class="form-control" type="text" name="username" placeholder="username" required>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input class="form-control" type="password" name="password" placeholder="password">
+                            <label for="password">Password (must be minimum 8 characters)</label>
+                            <input class="form-control" type="password" name="password" placeholder="password" required>
                         </div> 
                         <div class="form-group">
                             <label for="password">Retype Password</label>
-                            <input class="form-control" type="password" name="retypePassword" placeholder="retype password">
+                            <input class="form-control" type="password" name="retypePassword" placeholder="retype password" required>
                         </div>  
                         <div class="form-group">
                             <label for="isOwner">I am a...</label>

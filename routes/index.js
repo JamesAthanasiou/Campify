@@ -21,9 +21,22 @@ router.post("/register", function(req, res){
             email: req.body.email,
             isOwner: req.body.isOwner
         });
-        if (req.body.avatar){
-            newUser.avatar = req.body.avatar;
-        }
+    if (req.body.avatar){
+        newUser.avatar = req.body.avatar;
+    }
+    // input data validation 
+    if (req.body.password.length < 8){
+        req.flash("error", "Password must be at least 8 characters");
+        return res.redirect("/register");
+    }
+    if (req.body.retypePassword !== req.body.password){
+        req.flash("error", "Passwords do not match");
+        return res.redirect("/register");
+    }
+    if (req.body.email && !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))){
+        req.flash("error", "Must enter valid email or leave email empty");
+        return res.redirect("/register");
+    }
 
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){	
