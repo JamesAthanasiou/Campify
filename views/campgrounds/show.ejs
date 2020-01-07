@@ -7,12 +7,15 @@
 				<img class="img-responsive" src="<%= campground.image %>">
 				<div class="caption-full">
 					<h4 class="pull-right">$<%= campground.price %>.00 CAD / Night</h4>
-                    <h4><%= campground.name %>
+                    <div>
+                        <h4><%= campground.name %>
                         <% if (campground.isClaimed === true){ %>
-                            <span class="label label-success">Verified</span> 
+                            <span class="label label-success tag">Verified</span> 
                         <% } else { %>
-                            <span class="label label-default">Unclaimed</span> 
-                        <% } %></h4>
+                            <span class="label label-default tag">Unclaimed</span> 
+                        <% } %>
+                        </h4>
+                    </div>
                     <% if (campground.rating === 0) { %>
                         <h5>
                             <em>No reviews yet.</em>

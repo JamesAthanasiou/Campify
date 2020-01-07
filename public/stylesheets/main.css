@@ -42,6 +42,11 @@ body {
     flex-wrap: wrap;
 }
 
+.tag {
+    vertical-align: top;
+    font-size: 11px;
+}
+
 .thumbnail {
     padding: 0 0 8px;
     border: 1px solid #ddd;
