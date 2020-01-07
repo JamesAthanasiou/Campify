@@ -6,16 +6,16 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h1><%= user.username %></h1>
-                    <div class="thumbnail">
-                        <img src="<%= user.avatar %>" alt="user profile picture">
-                        <div class="caption">
-                            <% if(user.email){ %>
-                                Contact: <a href="mailto:<%= user.email %>"> <%= user.email %></a>
-                            <% } else { %>
-                                <!-- for older accounts with no email -->
-                                This user has not linked their email yet!
-                            <% } %>
-                        </div>
+                    <div class="thumbnail" id="thumbnail-profile">
+                            <img src="<%= user.avatar %>" alt="user profile picture">
+                            <div class="caption">
+                                <% if(user.email){ %>
+                                    Contact: <a href="mailto:<%= user.email %>"> <%= user.email %></a>
+                                <% } else { %>
+                                    <!-- for older accounts with no email -->
+                                    This user has not linked their email yet!
+                                <% } %>
+                            </div>
                     </div>
                     <h3>About</h3>
                     <%= user.description %>
@@ -28,27 +28,52 @@
                         <% } %>
                     </div>
                 </div>     
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="added-by-header">
-                            <h3>Campgrounds added by <%= user.username %></h3>
-                        </div>
-                        <div class="text-center index-campgrounds">
-                            <% campgrounds.forEach(function(campground){ %>
-                                <div class="col-sm-6 col-lg-4">
-                                    <div class="thumbnail">
-                                        <img src="<%= campground.image %>">
-                                        <div class="caption">
-                                            <h4><%= campground.name %></h4>
-                                        </div>
-                                        <p>
-                                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        </div>
+                <div class="col-sm-6">
+                    <% if (user.isOwner){ %>
+                    <div class="added-by-header">
+                        <h3>Campgrounds added by <%= user.username %></h3>
                     </div>
+                    <div class="text-center index-campgrounds">
+                        <% campgrounds.forEach(function(campground){ %>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="thumbnail">
+                                    <img src="<%= campground.image %>">
+                                    <div class="caption">
+                                        <h4><%= campground.name %></h4>
+                                    </div>
+                                    <p>
+                                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
+                                    </p>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                    <% } else { %>
+                        <div class="added-by-header">
+                            <h3>Reviews by <%= user.username %></h3>
+                        </div>
+                        <div class="thumbnail">
+                            <div class="caption-full">
+                                <% reviews.forEach(function(review){ %>
+                                    <% if (review !== reviews[0]) { %>
+                                        <hr>
+                                    <% } %>
+                                    <div><a href="/campgrounds/<%= review.campground %>"><strong><%= review.campground.name %></strong></a></div>
+                                    <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                                    <p class="review-body profile-review">
+                                        <%= review.text %>
+                                    </p>
+                                <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                                    <a class="btn btn-xs btn-warning"
+                                       href="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>/edit">Edit</a>
+                                    <form class="delete-form" action="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                    </form>
+                                <% } %>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>

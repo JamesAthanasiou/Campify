@@ -143,6 +143,11 @@ middlewareObj.checkReviewExistence = function(req, res, next){
                 req.flash("error", "Campground not found");
                 return res.redirect("back");
             }
+            // check if profile is an owner type (owners cannot review campgrounds)
+            if (req.user.isOwner){
+                req.flash("error", "Campground owners cannot review campgrounds.\nPlease log in with a personal account.");
+                res.redirect("/campgrounds/" + foundCampground._id);
+            }
             // check if req.user._id exists in foundCampground.reviews
             var foundUserReview = foundCampground.reviews.some(function(review){
                 return review.author.id.equals(req.user._id);
@@ -153,10 +158,24 @@ middlewareObj.checkReviewExistence = function(req, res, next){
             }
             // if review not found, new comment can be added
             next();
-        })
+        });
     } else {
         req.flash("error", "You must be logged in to do that");
         res.redirect("back");
+    }
+};
+
+// Check if profile is an owner type of profile for claiming campgrounds
+middlewareObj.canClaimCampground = function (req, res, next){
+    if(req.isAuthenticated()){
+        if (!req.user.isOwner){
+            req.flash("error", "Only campground owners can claim a profile");
+            res.redirect("back");
+        }
+        next();
+    } else {
+        req.flash("error", "You must be logged in to do that");
+        res.redirect("/login");
     }
 };
 

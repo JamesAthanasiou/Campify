@@ -14,9 +14,26 @@
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input class="form-control" type="password" name="password" placeholder="password">
-                        </div>                    
+                        </div> 
                         <div class="form-group">
-                            <label for="email">Email</label>
+                            <label for="password">Retype Password</label>
+                            <input class="form-control" type="password" name="retypePassword" placeholder="retype password">
+                        </div>  
+                        <div class="form-group">
+                            <label for="isOwner">I am a...</label>
+                            <p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                      <input type="radio" name="isOwner" id="camper" value="false" checked> Camper
+                                    </label>
+                                    <label class="btn btn-default">
+                                      <input type="radio" name="isOwner" id="owner" value="true"> Campground Owner
+                                    </label>
+                                </div>
+                            </p>
+                        </div>        
+                        <div class="form-group">
+                            <label for="email">Email (Optional)</label>
                             <input class="form-control" type="text" name="email" placeholder="email">
                         </div>
                         <div class="form-group">

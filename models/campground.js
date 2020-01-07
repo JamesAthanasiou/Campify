@@ -39,6 +39,10 @@ var campgroundSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 0
+    },
+    isClaimed: {
+        type: Boolean,
+        default: false
     }
 });
 
