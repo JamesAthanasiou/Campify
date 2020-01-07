@@ -1,3 +1,6 @@
+// used for environment variables in local development
+require("dotenv").config();
+
 var express        = require("express"),
 	app            = express(),
 	bodyParser     = require("body-parser"), 
@@ -11,10 +14,6 @@ var express        = require("express"),
     Review         = require("./models/review"),
     User           = require("./models/user");
     
-    // This is to find Google Maps API key for local development
-    // but is no longer used.
-    // require("dotenv").config();
-	
 // Requiring routes
 var campgroundRoutes  = require("./routes/campgrounds"),
     commentRoutes     = require("./routes/comments"),
@@ -29,7 +28,7 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect(process.env.DATABASEURL || "mongodb://localhost/campify");
+mongoose.connect("mongodb://localhost/campify" || process.env.DATABASEURL);
 
 // Helpful stuff
 app.use(bodyParser.urlencoded({extended: true}));

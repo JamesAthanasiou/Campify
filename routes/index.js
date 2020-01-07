@@ -17,10 +17,14 @@ router.get("/register", function(req, res){
 router.post("/register", function(req, res){
 	var newUser = new User(
         {
-            username: req.body.username, 
-            email: req.body.email, 
-            avatar: req.body.avatar
+            username: req.body.username,
+            email: req.body.email,
+            isOwner: req.body.isOwner
         });
+        if (req.body.avatar){
+            newUser.avatar = req.body.avatar;
+        }
+
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){	
 			req.flash("error", err.message);
@@ -29,7 +33,7 @@ router.post("/register", function(req, res){
 		passport.authenticate("local")(req, res, function(){
 			req.flash("success", "Welcome aboard " + user.username + "!");
 			res.redirect("/campgrounds");
-		})
+		});
 	});
 });
 
