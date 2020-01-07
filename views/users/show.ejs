@@ -58,7 +58,7 @@
                                     <% if (review !== reviews[0]) { %>
                                         <hr>
                                     <% } %>
-                                    <div><a href="/campgrounds/<%= review.campground %>"><strong><%= review.campground.name %></strong></a></div>
+                                    <div><a href="/campgrounds/<%= review.campground._id %>"><strong><%= review.campground.name %></strong></a></div>
                                     <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
                                     <p class="review-body profile-review">
                                         <%= review.text %>
