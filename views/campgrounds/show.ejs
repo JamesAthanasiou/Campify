@@ -39,7 +39,7 @@
                             <% } else { %>
                             Owned by
                             <% } %> 
-                            <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a>, added <%= moment(campground.createdAt).fromNow() %>
+                            <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a>
                         </em>
                     </p>
 					<% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
@@ -162,9 +162,7 @@ in the code. -->
             scrollwheel: false
         });
         var contentString = `
-            <strong><%= campground.name %><br />
-            <%= campground.location %></strong>
-            <p><%= campground.description %></p>
+            <strong><%= campground.location %></strong>
             `
         var infowindow = new google.maps.InfoWindow({
             content: contentString

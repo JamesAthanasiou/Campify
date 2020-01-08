@@ -43,7 +43,7 @@ router.get("/", function(req, res){
     // retrieve all campgrounds from db that match search string
     if(req.query.search){
         var regex = new RegExp(escapeRegex(req.query.search), "gi");
-        Campground.find({name: regex}, function(err, allCampgrounds){
+        Campground.find({name: regex}).sort([['name', 1]]).exec(function(err, allCampgrounds){
             if(err){
                 req.flash("error", "Could not find campgrounds");
                 console.log(err);
@@ -53,7 +53,8 @@ router.get("/", function(req, res){
         });
     } else {
         // retrieve all campgrounds from db
-        Campground.find({}, function(err, allCampgrounds){
+        Campground.find({}).sort([['name', 1]]).exec(function(err, allCampgrounds){
+        //Campground.find({}, function(err, allCampgrounds){
             if(err){
                 req.flash("error", "Could not find campgrounds");
                 console.log(err);
