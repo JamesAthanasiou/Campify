@@ -43,7 +43,7 @@
                             <% campgrounds.forEach(function(campground){ %>
                                 <div class="col-sm-6 col-lg-4">
                                     <div class="thumbnail">
-                                        <img src="<%= campground.image %>">
+                                        <img class="img-responsive" src="<%= campground.image %>">
                                         <div class="caption">
                                             <h4><%= campground.name %></h4>
                                         </div>
@@ -59,13 +59,13 @@
                         <div class="added-by-header">
                             <h3>Reviews by <%= user.username %></h3>
                         </div>
-                        <% if (reviews.length === 0) { %>
-                            <h5>
-                                <em>This user has not left any reivews yet!</em>
-                            </h5>
-                        <% } %>
                         <div class="thumbnail">
                             <div class="caption-full">
+                                <% if (reviews.length === 0) { %>
+                                    <h5>
+                                        <em>This user has not left any reivews yet!</em>
+                                    </h5>
+                                <% } %>
                                 <% reviews.forEach(function(review){ %>
                                     <% if (review !== reviews[0]) { %>
                                         <hr>

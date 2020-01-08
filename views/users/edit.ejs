@@ -6,7 +6,7 @@
             <div class="row">
                 <h1 class="form-header" >Edit <%= user.username %>'s Profile</h1>
                 <div class="form-body">
-                    <form action="/users/<%= user._id %>/?_method=PUT" method="POST">
+                    <form action="/users/<%= user._id %>/?_method=PUT" method="POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="user[email]">Email</label>
                             <% if (user.email) { %>
@@ -16,8 +16,8 @@
                             <% } %>
                         </div>
                         <div class="form-group">
-                            <label for="user[avatar]">Profile Picture URL</label>
-                            <input class="form-control" type="text" name="user[avatar]" value="<%= user.avatar %>" required>
+                            <label for="avatar">Profile Image (Optional)</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/*">   
                         </div>
                         <div class="form-group">
                             <label for="user[description]">About</label>

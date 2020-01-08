@@ -5,6 +5,29 @@ var Campground = require("../models/campground");
 var Review = require("../models/review");
 var middleware = require("../middleware/index");
 
+// for image upload
+var multer = require("multer");
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error("Only image files are allowed!"), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+var cloudinary = require("cloudinary");
+cloudinary.config({ 
+  cloud_name: "dagknixgt", 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 // Show user profile
 router.get("/:id", function (req,res){
     User.findById(req.params.id, function(err, user){
@@ -49,14 +72,54 @@ router.get("/:id/edit", middleware.checkProfileOwnership, function (req, res){
 });
 
 // Update user profile
-router.put("/:id", middleware.checkProfileOwnership, function (req, res){
-    User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+router.put("/:id", middleware.checkProfileOwnership, upload.single("avatar"), function (req, res){
+    User.findById(req.params.id, function(err, user){
         if(err){
-            console.log(err);
-            req.flash("error", "Could not edit profile");
-            res.redirect("/users/" + req.params.id);
+            req.flash("error", err.message);
+            return res.redirect("back");
+        }
+        if (req.file){
+            // case where user uploads an new avatar image
+            if(user.avatarId){
+                // if the user previously uploaded an image and is not using the default id, delete image from cloud
+                cloudinary.v2.uploader.destroy(user.avatarId), function(err){
+                    if(err){
+                        req.flash("error", err.message);
+                        return res.redirect("back");
+                    }
+                }
+            }
+            // add new image to cloud and replace in db
+            cloudinary.v2.uploader.upload(req.file.path, function(err, result){
+                if(err){
+                    req.flash("error", err.message);
+                    return res.redirect("back");
+                }
+                user.avatarId = result.public_id;
+                user.avatar = result.secure_url;
+                user.email = req.body.user.email;
+                user.description = req.body.user.description;
+                user.save(function(err){
+                    if(err){
+                        req.flash("error", "Failed to update profile");
+                        return res.redirect("/users/" + req.params.id);
+                    }
+                });
+                req.flash("success","Successfully updated!");
+                res.redirect("/users/" + req.params.id);
+            });
+        // if no image uploaded, only update other values in campground
         } else {
-            res.redirect("/users/" + req.params.id);
+            user.email = req.body.user.email;
+            user.description = req.body.user.description;
+            user.save(function(err){
+                if(err){
+                    req.flash("error", "Failed to update profile");
+                    return res.redirect("/users/" + req.params.id)
+                }
+                req.flash("success","Successfully updated!");
+                res.redirect("/users/" + req.params.id)
+            });
         }
     });
 });
