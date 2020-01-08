@@ -30,28 +30,40 @@
                 </div>     
                 <div class="col-sm-6">
                     <% if (user.isOwner){ %>
-                    <div class="added-by-header">
-                        <h3>Campgrounds added by <%= user.username %></h3>
-                    </div>
-                    <div class="text-center index-campgrounds">
-                        <% campgrounds.forEach(function(campground){ %>
-                            <div class="col-sm-6 col-lg-4">
-                                <div class="thumbnail">
-                                    <img src="<%= campground.image %>">
-                                    <div class="caption">
-                                        <h4><%= campground.name %></h4>
+                        <!-- For Campground Owner Profile -->
+                        <div class="added-by-header">
+                            <h3>Campgrounds operated by <%= user.username %></h3>
+                        </div>
+                        <% if (campgrounds.length === 0) { %>
+                            <h5>
+                                <em>This user has not added any campgrounds yet!</em>
+                            </h5>
+                        <% } %>
+                        <div class="text-center index-campgrounds">
+                            <% campgrounds.forEach(function(campground){ %>
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="thumbnail">
+                                        <img src="<%= campground.image %>">
+                                        <div class="caption">
+                                            <h4><%= campground.name %></h4>
+                                        </div>
+                                        <p>
+                                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
+                                        </p>
                                     </div>
-                                    <p>
-                                        <a href="/campgrounds/<%= campground._id %>" class="btn btn-success">More Info</a>
-                                    </p>
                                 </div>
-                            </div>
-                        <% }); %>
-                    </div>
+                            <% }); %>
+                        </div>
                     <% } else { %>
+                        <!-- For Camper Profile -->
                         <div class="added-by-header">
                             <h3>Reviews by <%= user.username %></h3>
                         </div>
+                        <% if (reviews.length === 0) { %>
+                            <h5>
+                                <em>This user has not left any reivews yet!</em>
+                            </h5>
+                        <% } %>
                         <div class="thumbnail">
                             <div class="caption-full">
                                 <% reviews.forEach(function(review){ %>
@@ -63,13 +75,13 @@
                                     <p class="review-body profile-review">
                                         <%= review.text %>
                                     </p>
-                                <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
-                                    <a class="btn btn-xs btn-warning"
-                                       href="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>/edit">Edit</a>
-                                    <form class="delete-form" action="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-                                    </form>
-                                <% } %>
+                                    <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                                        <a class="btn btn-xs btn-warning"
+                                        href="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>/edit">Edit</a>
+                                        <form class="delete-form" action="/campgrounds/<%= review.campground %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                                        </form>
+                                    <% } %>
                                 <% }); %>
                             </div>
                         </div>
